@@ -1,37 +1,40 @@
 // api.js - Handles AI communication
 const API_CONFIG = {
-    // کلید API خودت رو اینجا بگذار (یا بعداً از متغیر بخون)
-    apiKey: "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", 
-    endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+    apiKey: "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", // کلید API خودت رو اینجا بگذار
+    endpoint: "https://openrouter.ai/api/v1/chat/completions"
 };
 
-async function callGeminiAPI(userMessage) {
-    if (API_CONFIG.apiKey === "YOUR_API_KEY_HERE") {
-        return "System Warning: Please configure your API key in api.js, Kak Farhad! ⚠️";
+async function callOpenRouterAI(userMessage) {
+    if (API_CONFIG.apiKey === "YOUR_API_KEY_HERE" || !API_CONFIG.apiKey) {
+        return "⚠️ Please put your API key in api.js file, Kak Farhad!";
     }
 
     try {
-        const response = await fetch(`${API_CONFIG.endpoint}?key=${API_CONFIG.apiKey}`, {
+        const response = await fetch(API_CONFIG.endpoint, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Authorization": `Bearer ${API_CONFIG.apiKey}`,
+                "Content-Type": "application/json",
+                "HTTP-Referer": window.location.origin,
+                "X-Title": "Cina AI"
             },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: userMessage }]
-                }]
+                model: "cognitivecomputations/dolphin-mixtral-8x7b",
+                messages: [{ role: "user", content: userMessage }]
             })
         });
 
         const data = await response.json();
         
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
-            return data.candidates[0].content.parts[0].text;
+        if (data.choices && data.choices[0].message.content) {
+            return data.choices[0].message.content;
+        } else if (data.error) {
+            return `API Error: ${data.error.message || "Unknown error"}`;
         } else {
-            return "Received an empty response from the core system. 🔄";
+            return "Received an empty response from the server. 🔄";
         }
     } catch (error) {
-        console.error("API Error:", error);
-        return "Connection error with the neural network. Check your network or API key! ❌";
+        console.error("Connection Error:", error);
+        return "Network connection error. Check your internet or API key! ❌";
     }
 }
