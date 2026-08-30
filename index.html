@@ -263,5 +263,30 @@
         }
     </script>
 
+<!-- فایل API رو اینجا ایمپورت کن -->
+<script src="api.js"></script>
+
+<script>
+    // حالا توی تابع ارسال پیام، به راحتی تابع بالا رو صدا می‌زنی
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'user');
+        userInput.value = '';
+
+        // نمایش وضعیت در حال پردازش...
+        const loadingId = appendMessage("Thinking...", 'ai');
+
+        // صدا زدن تابع از فایل api.js
+        const aiResponse = await callGeminiAPI(text);
+        
+        // جایگزینی متن پاسخ واقعی
+        chatContainer.lastChild.textContent = aiResponse;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+</script>
+
+    
 </body>
 </html>
