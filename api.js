@@ -19,7 +19,7 @@ async function callOpenRouterAI(userMessage) {
                 "X-Title": "Cina AI"
             },
             body: JSON.stringify({
-                model: "openai/gpt-4o-mini", // مدل رو گذاشتم روی یک مدل معتبر و عالی
+                model: "openrouter/free", // استفاده از مدل رایگان و اتوماتیک
                 messages: [{ role: "user", content: userMessage }]
             })
         });
