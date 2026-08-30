@@ -1,6 +1,6 @@
 // api.js - Handles AI communication
 const API_CONFIG = {
-    apiKey: "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", // کلید API خودت رو اینجا بگذار
+    apiKey: "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", 
     endpoint: "https://openrouter.ai/api/v1/chat/completions"
 };
 
@@ -19,7 +19,7 @@ async function callOpenRouterAI(userMessage) {
                 "X-Title": "Cina AI"
             },
             body: JSON.stringify({
-                model: "cognitivecomputations/dolphin-mixtral-8x7b",
+                model: "openai/gpt-4o-mini", // مدل رو گذاشتم روی یک مدل معتبر و عالی
                 messages: [{ role: "user", content: userMessage }]
             })
         });
