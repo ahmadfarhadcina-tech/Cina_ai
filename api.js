@@ -1,19 +1,18 @@
-// api.js - Connected using Bearer Token authentication
+// api.js - Connected directly to Google AI Studio Gemini API
 const API_CONFIG = {
-    token: "AQ.Ab8RN6Kj2Do0XdbM1I8fI2uNXA21OD4AlE5m4MAZqwLeoVmITg", 
+    apiKey: "AIza.Ab8RN6JDD1LptwJXpLfwGrE2EGnhmWdw_08bmd5XAMLYm9NqTQ", 
     endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 };
 
 async function callOpenRouterAI(userMessage) {
-    if (!API_CONFIG.token) {
-        return "⚠️ Please check your token, Kak Farhad!";
+    if (!API_CONFIG.apiKey) {
+        return "⚠️ Please check your API key, Kak Farhad!";
     }
 
     try {
-        const response = await fetch(API_CONFIG.endpoint, {
+        const response = await fetch(`${API_CONFIG.endpoint}?key=${API_CONFIG.apiKey}`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${API_CONFIG.token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
