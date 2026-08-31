@@ -1,18 +1,19 @@
-// api.js - Connected directly to Google Gemini API
+// api.js - Connected using Bearer Token authentication
 const API_CONFIG = {
-    apiKey: "AQ.Ab8RN6Kj2Do0XdbM1I8fI2uNXA21OD4AlE5m4MAZqwLeoVmITg", 
+    token: "AQ.Ab8RN6Kj2Do0XdbM1I8fI2uNXA21OD4AlE5m4MAZqwLeoVmITg", 
     endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 };
 
 async function callOpenRouterAI(userMessage) {
-    if (!API_CONFIG.apiKey) {
-        return "⚠️ Please check your API key, Kak Farhad!";
+    if (!API_CONFIG.token) {
+        return "⚠️ Please check your token, Kak Farhad!";
     }
 
     try {
-        const response = await fetch(`${API_CONFIG.endpoint}?key=${API_CONFIG.apiKey}`, {
+        const response = await fetch(API_CONFIG.endpoint, {
             method: "POST",
             headers: {
+                "Authorization": `Bearer ${API_CONFIG.token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
