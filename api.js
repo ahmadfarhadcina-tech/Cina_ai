@@ -1,8 +1,8 @@
-// api.js - Connected to Groq API
+// api.js - Connected to Groq API with stable model
 const API_CONFIG = {
     apiKey: "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",
     endpoint: "https://api.groq.com/openai/v1/chat/completions",
-    model: "llama-3.3-70b-versatile"
+    model: "llama-3-8b-8192"
 };
 
 async function callOpenRouterAI(userMessage) {
