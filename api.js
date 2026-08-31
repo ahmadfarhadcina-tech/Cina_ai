@@ -1,4 +1,4 @@
-// api.js - Connected to Groq API with stable model
+// api.js - Groq API Fixed
 const API_CONFIG = {
     apiKey: "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",
     endpoint: "https://api.groq.com/openai/v1/chat/completions",
@@ -7,7 +7,7 @@ const API_CONFIG = {
 
 async function callOpenRouterAI(userMessage) {
     if (!API_CONFIG.apiKey) {
-        return "⚠️ Please check your Groq API key, Kak Farhad!";
+        return "⚠️ Please check your API key, Kak Farhad!";
     }
 
     try {
@@ -33,7 +33,7 @@ async function callOpenRouterAI(userMessage) {
         } else if (data.error) {
             return `Groq API Error: ${data.error.message || "Unknown error"}`;
         } else {
-            return "Received an empty response from Groq. 🔄";
+            return "Received an empty response. 🔄";
         }
     } catch (error) {
         console.error("Connection Error:", error);
