@@ -1,40 +1,38 @@
-// api.js - Handles AI communication
+// api.js - Connected directly to Google Gemini API
 const API_CONFIG = {
-    apiKey: "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", 
-    endpoint: "https://openrouter.ai/api/v1/chat/completions"
+    apiKey: "AQ.Ab8RN6Kj2Do0XdbM1I8fI2uNXA21OD4AlE5m4MAZqwLeoVmITg", 
+    endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 };
 
 async function callOpenRouterAI(userMessage) {
-    if (API_CONFIG.apiKey === "YOUR_API_KEY_HERE" || !API_CONFIG.apiKey) {
-        return "⚠️ Please put your API key in api.js file, Kak Farhad!";
+    if (!API_CONFIG.apiKey) {
+        return "⚠️ Please check your API key, Kak Farhad!";
     }
 
     try {
-        const response = await fetch(API_CONFIG.endpoint, {
+        const response = await fetch(`${API_CONFIG.endpoint}?key=${API_CONFIG.apiKey}`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${API_CONFIG.apiKey}`,
-                "Content-Type": "application/json",
-                "HTTP-Referer": window.location.origin,
-                "X-Title": "Cina AI"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "openrouter/free", // استفاده از مدل رایگان و اتوماتیک
-                messages: [{ role: "user", content: userMessage }]
+                contents: [{
+                    parts: [{ text: userMessage }]
+                }]
             })
         });
 
         const data = await response.json();
         
-        if (data.choices && data.choices[0].message.content) {
-            return data.choices[0].message.content;
+        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+            return data.candidates[0].content.parts[0].text;
         } else if (data.error) {
-            return `API Error: ${data.error.message || "Unknown error"}`;
+            return `Gemini API Error: ${data.error.message || "Unknown error"}`;
         } else {
-            return "Received an empty response from the server. 🔄";
+            return "Received an empty response from Gemini. 🔄";
         }
     } catch (error) {
         console.error("Connection Error:", error);
-        return "Network connection error. Check your internet or API key! ❌";
+        return "Network connection error. Check your internet! ❌";
     }
 }
