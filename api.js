@@ -1,35 +1,39 @@
-// api.js - Connected directly to Google AI Studio Gemini API
+// api.js - Connected to Groq API
 const API_CONFIG = {
-    apiKey: "AIza.Ab8RN6JDD1LptwJXpLfwGrE2EGnhmWdw_08bmd5XAMLYm9NqTQ", 
-    endpoint: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    apiKey: "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",
+    endpoint: "https://api.groq.com/openai/v1/chat/completions",
+    model: "llama-3.3-70b-versatile"
 };
 
 async function callOpenRouterAI(userMessage) {
     if (!API_CONFIG.apiKey) {
-        return "⚠️ Please check your API key, Kak Farhad!";
+        return "⚠️ Please check your Groq API key, Kak Farhad!";
     }
 
     try {
-        const response = await fetch(`${API_CONFIG.endpoint}?key=${API_CONFIG.apiKey}`, {
+        const response = await fetch(API_CONFIG.endpoint, {
             method: "POST",
             headers: {
+                "Authorization": `Bearer ${API_CONFIG.apiKey}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: userMessage }]
-                }]
+                model: API_CONFIG.model,
+                messages: [
+                    { role: "user", content: userMessage }
+                ],
+                temperature: 0.7
             })
         });
 
         const data = await response.json();
         
-        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-            return data.candidates[0].content.parts[0].text;
+        if (data.choices && data.choices[0].message && data.choices[0].message.content) {
+            return data.choices[0].message.content;
         } else if (data.error) {
-            return `Gemini API Error: ${data.error.message || "Unknown error"}`;
+            return `Groq API Error: ${data.error.message || "Unknown error"}`;
         } else {
-            return "Received an empty response from Gemini. 🔄";
+            return "Received an empty response from Groq. 🔄";
         }
     } catch (error) {
         console.error("Connection Error:", error);
